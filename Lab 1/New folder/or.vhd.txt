@@ -1,0 +1,32 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 01.02.2021 19:10:54
+-- Design Name: 
+-- Module Name: or - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity or_gate is
+GENERIC (N : INTEGER); --bit width
+ port (A, B: in std_logic_vector(N-1 downto 0);
+        Y : out std_logic_vector(N-1 downto 0));
+end;
+
+architecture oh_behave1 of or_gate is begin
+  Y <= A OR B;
+end;
