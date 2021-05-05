@@ -1,0 +1,24 @@
+--Author: Shubhang Mehrotra
+--Date: 03/31
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Write an HDL module for an SR latch.
+
+
+ENTITY assignment9_26 IS 
+	PORT (s,r : in  std_logic;
+		    q : out std_logic);
+END assignment9_26;
+
+ARCHITECTURE behave OF assignment9_26 IS 
+	SIGNAL q_n : std_logic;
+	SIGNAL  q2 : std_logic;
+BEGIN 
+	q   <= q2
+	q2  <= R NOR q_n;
+	q_n <= S NOR q2;
+
+END;

@@ -1,0 +1,70 @@
+--Author: Shubhang Mehrotra
+--Date: 04/07
+
+library ieee;
+library std;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use std.textio.all;
+use ieee.std_logic_textio.all;
+
+
+
+--Test bench for 4.16
+
+
+ENTITY assignment10_16TB IS 
+	--
+END assignment10_16TB;
+
+ARCHITECTURE behave OF assignment10_16TB IS 	
+COMPONENT bubble IS 
+	PORT ( a, b, c, d, e : in  std_logic;
+		               y : out std_logic);
+END COMPONENT;
+	
+	SIGNAL a_sig, b_sig, c_sig, d_sig , e_sig : std_logic;
+	SIGNAL y_sig : std_logic;
+	
+	FILE vector_file: text open read_mode is "test_file416.txt";
+	
+BEGIN 
+
+uut: bubble 
+
+	 port map (a => a_sig, b => b_sig, c => c_sig, d => d_sig, e => e_sig, y=> y_sig);
+	
+testing: process 
+	variable vector_line, result_line : line;
+	variable vector_valid : boolean;
+	
+	variable v_a, v_b, v_c, v_d, v_e : std_logic;
+	variable v_y : std_logic;
+	
+BEGIN	
+	
+	while not endfile(vector_file) loop
+		readline (vector_file, vector_line);
+		read (vector_line, v_a, good => vector_valid);
+		next when not vector_valid;
+		read (vector_line, v_b);
+		read (vector_line, v_c);
+		read (vector_line, v_d);
+		read (vector_line, v_e);
+		
+		read (vector_line, v_y);
+		wait for 10ns;
+		a_sig <= v_a;
+		b_sig <= v_b;
+		c_sig <= v_c;
+		d_sig <= v_d;
+		e_sig <= v_e;
+		assert y_sig = v_y report "Wrong output";
+		
+		v_y := y_sig;
+			
+    end loop;
+
+	file_close(vector_file);	
+ END PROCESS;	
+END;

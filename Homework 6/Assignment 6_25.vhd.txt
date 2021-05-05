@@ -1,0 +1,46 @@
+--Author: Shubhang Mehrotra
+--Date: 03/09
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--VHDL code for an 8-to-3 priority encoder,
+--using an if-then-else statement.
+
+ENTITY assignment6_25 IS 
+	PORT ( w : in  std_logic_vector(7 downto 0);
+		   y : out std_logic_vector(2 downto 0);
+		   z : out std_logic);
+END assignment6_25;
+
+ARCHITECTURE behave OF assignment6_25 IS 
+BEGIN 
+	PROCESS(w)
+		BEGIN
+		IF    w(7) = '1' THEN
+			y <= "111";
+		ELSIF w(6) = '1' THEN
+			y <= "110";	
+		ELSIF w(5) = '1' THEN
+			y <= "101";	
+		ELSIF w(4) = '1' THEN
+			y <= "100";	
+		ELSIF w(3) = '1' THEN
+			y <= "011";	
+		ELSIF w(2) = '1' THEN
+			y <= "010";
+        ELSIF w(1) = '1' THEN
+			y <= "001";	
+        ELSE 
+			y <= "000";
+		END IF;
+		
+		IF w = "00000000" THEN
+			z <= '0';
+		ELSE 
+			z <= '1';
+		END IF;
+		
+    END PROCESS	
+END behave;

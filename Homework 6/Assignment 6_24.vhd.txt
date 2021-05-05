@@ -1,0 +1,28 @@
+--Author: Shubhang Mehrotra
+--Date: 03/09
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Using a conditional signal assignment, 
+--write VHDL code for an 8-to-3 priority encoder.
+
+ENTITY assignment6_24 IS 
+	PORT ( w : in  std_logic_vector(7 downto 0);
+		   y : out std_logic_vector(2 downto 0);
+		   z : out std_logic);
+END assignment6_24;
+
+ARCHITECTURE behave OF assignment6_24 IS 
+BEGIN 
+    	y <= "111" WHEN w(7)="1" ELSE
+    		 "110" WHEN w(6)="1" ELSE
+    		 "101" WHEN w(5)="1" ELSE
+			 "100" WHEN w(4)="1" ELSE
+			 "011" WHEN w(3)="1" ELSE
+			 "010" WHEN w(2)="1" ELSE
+			 "001" WHEN w(1)="1" ELSE
+			 "000";
+		z <= '0' WHEN w="00000000" ELSE '1'; 	 
+END behave;

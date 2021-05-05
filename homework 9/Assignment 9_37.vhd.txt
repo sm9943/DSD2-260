@@ -1,0 +1,43 @@
+--Author: Shubhang Mehrotra
+--Date: 03/31
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Write an HDL module for the Gray code counter
+
+
+ENTITY assignment9_37 IS 
+	PORT (clk : in  std_logic;
+		  rst : in  std_logic;
+		    q : out std_logic_vector(2 downto 0));
+END assignment9_37;
+
+ARCHITECTURE behave OF assignment9_37 IS 
+	SIGNAL     state : std_logic_vector(2 downto 0);
+	SIGNAL nextstate : std_logic_vector(2 downto 0);
+BEGIN 
+	PROCESS (clk, rst) BEGIN
+		IF rst THEN state <= "000";
+		ELSIF rising_edge(clk) THEN
+			state <= nextstate;
+		END IF;
+	END PROCESS;
+
+	PROCESS (all) BEGIN
+		CASE state IS
+			when "000"  => nextstate <= "001";
+			when "001"  => nextstate <= "011";
+			when "011"  => nextstate <= "010";
+			when "010"  => nextstate <= "110";
+			when "110"  => nextstate <= "111";
+			when "111"  => nextstate <= "101";
+			when "101"  => nextstate <= "100";
+			when "100"  => nextstate <= "000";
+			when others => nextstate <= "000";
+		END CASE;
+	END PROCESS;
+	
+	q	<= state;
+END;

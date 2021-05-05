@@ -1,0 +1,20 @@
+--Author: Shubhang Mehrotra
+--Date: 04/06
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Write an HDL module that computes a four-input XOR function.
+--The input is a3:0, and the output is y.
+
+
+ENTITY XOR4 IS 
+	PORT (  a : in  std_logic_vector(3 downto 0);
+		    y : out std_logic);
+END XOR4;
+
+ARCHITECTURE behave OF XOR4 IS 
+BEGIN 
+	y	<= a(3) XOR a(2) XOR a(1) XOR a(0);
+END;

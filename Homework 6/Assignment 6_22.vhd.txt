@@ -1,0 +1,26 @@
+--Author: Shubhang Mehrotra
+--Date: 03/09
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Using a conditional signal assignment, 
+--write VHDL code for an 8-to-3 binary encoder.
+
+ENTITY assignment6_22 IS 
+	PORT ( w : in  std_logic_vector(7 downto 0);
+		   y : out std_logic_vector(2 downto 0) );
+END assignment6_22;
+
+ARCHITECTURE behave OF assignment6_22 IS 
+BEGIN 
+    	y <= "000" WHEN w="00000001" ELSE
+    		 "001" WHEN w="00000010" ELSE
+    		 "010" WHEN w="00000100" ELSE
+			 "011" WHEN w="00001000" ELSE
+			 "100" WHEN w="00010000" ELSE
+			 "101" WHEN w="00100000" ELSE
+			 "110" WHEN w="01000000" ELSE
+			 "111";
+END behave;

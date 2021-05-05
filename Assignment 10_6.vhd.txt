@@ -1,0 +1,41 @@
+--Author: Shubhang Mehrotra
+--Date: 03/25
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Write an HDL module for a hexadecimal seven-segment display decoder. 
+--The decoder should handle the digits A, B, C, D, E, and F as well as 0–9.
+--ref. pg. 201 in Harris
+
+ENTITY seven_seg_dec IS 
+	PORT ( data 	: in  std_logic_vector(3 downto 0);
+		   segments : out std_logic_vector(6 downto 0) );
+END seven_seg_dec;
+
+ARCHITECTURE synth OF seven_seg_dec IS 
+BEGIN 
+	PROCESS(data) BEGIN
+		CASE data IS
+		--			    abcdefg
+		when X"0"   => segments <= "1111110";
+		when X"1"   => segments <= "0110000";
+		when X"2"   => segments <= "1101101";
+		when X"3"   => segments <= "1111001";
+		when X"4"   => segments <= "0110011";
+		when X"5"   => segments <= "1011011";
+		when X"6"   => segments <= "1011111";
+		when X"7"   => segments <= "1110000";
+		when X"8"   => segments <= "1111111";
+		when X"9"   => segments <= "1110011";
+		when X"A"   => segments <= "1110111";
+		when X"B"   => segments <= "0011111";
+		when X"C"   => segments <= "0001101";
+		when X"D"   => segments <= "0111101";
+		when X"E"   => segments <= "1001111";
+		when X"F"   => segments <= "1000111";
+		when others => segments <= "0000000";
+		END CASE;
+	END PROCESS;
+END synth;

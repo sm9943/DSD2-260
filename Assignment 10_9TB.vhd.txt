@@ -1,0 +1,67 @@
+--Author: Shubhang Mehrotra
+--Date: 04/07
+
+library ieee;
+library std;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use std.textio.all;
+use ieee.std_logic_textio.all;
+
+
+
+--Write a self-checking testbench for Exercise 4.6. Create a test vector file
+--containing all 16 test cases. Simulate the circuit and show that it works. Introduce an
+--error in the test vector file and show that the testbench reports a mismatch.
+
+
+ENTITY assignment10_9TB IS 
+	--
+END assignment10_9TB;
+
+ARCHITECTURE behave OF assignment10_9TB IS 	
+COMPONENT mux IS 
+	PORT ( a, b, c : in  std_logic;
+		         y : out std_logic_vector(0 downto 0));
+END COMPONENT;
+	
+	SIGNAL a_sig, b_sig, c_sig  : std_logic;
+	SIGNAL y_sig : std_logic_vector(0 downto 0);
+	
+	FILE vector_file: text open read_mode is "test_file49.txt";
+	
+BEGIN 
+
+uut: mux 
+	 port map (a => a_sig, b => b_sig, c => c_sig, y=> y_sig);
+	
+testing: process 
+	variable vector_line, result_line : line;
+	variable vector_valid : boolean;
+	
+	variable v_a, v_b, v_c : std_logic;
+	variable v_y : std_logic_vector(0 downto 0);
+	
+BEGIN	
+	
+	while not endfile(vector_file) loop
+		readline (vector_file, vector_line);
+		read (vector_line, v_a, good => vector_valid);
+		next when not vector_valid;
+		read (vector_line, v_b);
+		read (vector_line, v_c);
+		
+		read (vector_line, v_y);
+		wait for 10ns;
+		a_sig <= v_a;
+		b_sig <= v_b;
+		c_sig <= v_c;
+		assert y_sig = v_y report "Wrong output";
+		
+		v_y := y_sig;
+			
+    end loop;
+
+	file_close(vector_file);	
+ END PROCESS;	
+END;

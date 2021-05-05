@@ -1,0 +1,72 @@
+--Author: Shubhang Mehrotra
+--Date: 03/31
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Write an HDL module for the traffic light controller
+
+
+ENTITY assignment9_29 IS 
+	PORT (clk,rst : in  std_logic;
+            ta,tb : in  std_logic;			
+		    la,lb : out std_logic_vector(1 downto 0));
+END assignment9_26;
+
+ARCHITECTURE behave OF assignment9_29 IS 
+
+	TYPE statetype is (S0,S1, S2, S3);
+	SIGNAL state, nextstate : statetype;
+	SIGNAL temp_la : std_logic_vector(1 downto 0);
+	SIGNAL temp_lb : std_logic_vector(1 downto 0);
+	SIGNAL temp_out : std_logic_vector(3 downto 0);
+	
+BEGIN 
+	
+	PROCESS (clk, rst) BEGIN
+		IF rst THEN state <= S0;
+		ELSIF rising_edge(clk) THEN
+			state <= nextstate;
+		END IF;
+	END PROCESS;
+	
+	PROCESS (all) BEGIN
+		CASE state IS 
+			when S0 => if ta then 
+					nextstate <= S0;
+					else    
+					nextstate <= S1;
+					end if;
+			
+			when S1 => nextstate <= S2;
+			
+			when S2 => if tb then 
+					nextstate <= S2;
+					else    
+					nextstate <= S3;
+					end if;
+					
+			when S3 => nextstate <= S0;		
+			
+			when others =>  nextstate <= S0;
+		END CASE;
+	END PROCESS;
+	
+	la <= temp_la;
+	lb <= temp_lb;
+	
+	temp_la <= temp_out(3 downto 2);
+	temp_lb <= temp_out(1 downto 0);
+	
+	PROCESS (all) BEGIN
+		CASE state IS
+			when     S0 => temp_out <= "0010";
+			when     S1 => temp_out <= "0110";
+			when     S2 => temp_out <= "1000";
+			when     S3 => temp_out <= "1001";
+			when others => temp_out <= "1010";
+		END CASE;
+	END PROCESS;
+	
+END;

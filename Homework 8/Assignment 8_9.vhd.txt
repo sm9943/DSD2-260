@@ -1,0 +1,33 @@
+--Author: Shubhang Mehrotra
+--Date: 03/25
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Write a structural module to compute the logic function, y = ab' + b'c'+a'bc,
+--using multiplexer logic. Use the 8:1 multiplexer from Exercise 4.8.
+-- ref. attached solutions pdf 
+
+
+ENTITY assignment8_9 IS 
+	PORT ( a, b, c : in  std_logic;
+		         y : out std_logic_vector(0 downto 0));
+END assignment8_9;
+
+ARCHITECTURE struct OF assignment8_9 IS 
+	COMPONENT mux8 
+		GENERIC (width: integer);
+		PORT ( d0, d1, d2, d3, d4, d5, d6, d7 : in  std_logic_vector(width-1 downto 0);
+											s : in	std_logic_vector(2 downto 0);
+											y : out std_logic_vector(width-1 downto 0));
+	END COMPONENT;
+	
+	SIGNAL sel : STD_LOGIC_VECTOR(2 downto 0);
+BEGIN 
+	sel <= a & b & c;
+	
+	mux8_comp: mux8 port map (d0 => "1", d1 => "0", d2 => "0", d3 => "1",
+							  d4 => "1", d5 => "1", d6 => "0", d7 => "0",
+							  sel => sel, y => y)
+END struct;

@@ -1,0 +1,52 @@
+--Author: Shubhang Mehrotra
+--Date: 03/31
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Write an HDL module for the FSM
+
+
+ENTITY assignment9_32 IS 
+	PORT (clk,rst : in  std_logic;
+              a,b : in  std_logic;			
+		        q : out std_logic);
+END assignment9_32;
+
+ARCHITECTURE behave OF assignment9_32 IS 
+
+	TYPE statetype is (S0,S1, S2);
+	SIGNAL state, nextstate : statetype;
+
+BEGIN 
+	PROCESS (clk, rst) BEGIN
+		IF rst THEN state <= S0;
+		ELSIF rising_edge(clk) THEN
+			state <= nextstate;
+		END IF;
+	END PROCESS;
+	
+	PROCESS (all) BEGIN 
+		CASE state IS
+			when S0 => if a then 
+					nextstate <= S1;
+					else    
+					nextstate <= S0;
+					end if;
+					
+			when S1 => if b then 
+					nextstate <= S2;
+					else    
+					nextstate <= S0;
+					end if;
+					
+			when S2 => nextstate <= S0;
+			
+			when others =>  nextstate <= S0;
+		END CASE;
+	END PROCESS;	
+	
+	q <= '1' WHEN state = S2 ELSE '0';	
+
+END;

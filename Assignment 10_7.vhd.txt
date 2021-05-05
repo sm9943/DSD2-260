@@ -1,0 +1,72 @@
+--Author: Shubhang Mehrotra
+--Date: 04/07
+
+library ieee;
+library std;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use std.textio.all;
+use ieee.std_logic_textio.all;
+
+
+
+--Write a self-checking testbench for Exercise 4.6. Create a test vector file
+--containing all 16 test cases. Simulate the circuit and show that it works. Introduce an
+--error in the test vector file and show that the testbench reports a mismatch.
+
+
+ENTITY assignment10_7TB IS 
+	--
+END assignment10_7TB;
+
+ARCHITECTURE behave OF assignment10_7TB IS 	
+COMPONENT seven_seg_dec IS 
+	PORT ( data 	: in  std_logic_vector(3 downto 0);
+		   segments : out std_logic_vector(6 downto 0) );
+END COMPONENT;
+	
+	SIGNAL data_sig     : std_logic_vector(3 downto 0);
+	SIGNAL segments_sig : std_logic_vector(6 downto 0);
+	
+	FILE vector_file: text open read_mode is "test_file47.txt";
+	
+BEGIN 
+
+uut: seven_seg_dec 
+	 port map (data => data_sig, segments=> segments_sig);
+	
+testing: process 
+	variable vector_line, result_line : line;
+	variable vector_valid : boolean;
+	
+	variable v_data     : std_logic_vector(3 downto 0);
+	variable v_segments : std_logic_vector(6 downto 0);
+	
+BEGIN	
+	
+	while not endfile(vector_file) loop
+		readline (vector_file, vector_line);
+		read (vector_line, v_data(3), good => vector_valid);
+		next when not vector_valid;
+		read (vector_line, v_data(2));
+		read (vector_line, v_data(1));
+		read (vector_line, v_data(0));
+		
+		read (vector_line, v_segments(0));
+		read (vector_line, v_segments(1));
+		read (vector_line, v_segments(2));
+		read (vector_line, v_segments(3));
+		read (vector_line, v_segments(4));
+		read (vector_line, v_segments(5));
+		read (vector_line, v_segments(6));
+		wait for 10ns;
+		data_sig <= v_data(3) & v_data(2) & v_data(1) & v_data(0);
+		assert segments_sig = v_segments report "Wrong output";
+		
+		v_segments := segments_sig;
+			
+    end loop;
+
+	file_close(vector_file);	
+ END PROCESS;	
+END;

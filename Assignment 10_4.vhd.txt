@@ -1,0 +1,75 @@
+--Author: Shubhang Mehrotra
+--Date: 04/06
+
+library ieee;
+library std;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use std.textio.all;
+use ieee.std_logic_textio.all;
+
+
+
+--Write a self-checking testbench for Exercise 4.3. Create a test vector
+--file containing all 16 test cases. Simulate the circuit and show that it 
+--works. Introduce an error in the test vector file and show that the testbench reports a
+--mismatch.
+
+
+ENTITY assignment10_4TB IS 
+	--
+END assignment10_4TB;
+
+ARCHITECTURE behave OF assignment10_4TB IS 
+	COMPONENT XOR4 IS 
+	PORT (  a : in  std_logic_vector(3 downto 0);
+		    y : out std_logic);
+	END COMPONENT;
+	
+	SIGNAL a_sig : std_logic_vector(3 downto 0);
+	SIGNAL y_sig : std_logic;
+	
+	FILE vector_file: text open read_mode is "test_file44.txt";
+	--FILE result_file : text open write_mode is "result_file4.4.txt";
+	
+BEGIN 
+
+uut: XOR4 
+	 port map (a => a_sig, y=> y_sig);
+	
+testing: process 
+	variable vector_line, result_line : line;
+	variable vector_valid : boolean;
+	--variable error_msg : line;
+	
+	variable v_a : std_logic_vector(3 downto 0);
+	variable v_y : std_logic;
+	
+BEGIN	
+	--write (result_line, string'("v_a, v_y"));
+	--writeline (result_file, result_line);
+	
+	while not endfile(vector_file) loop
+		readline (vector_file, vector_line);
+		read (vector_line, v_a(3), good => vector_valid);
+		next when not vector_valid;
+		read (vector_line, v_a(2));
+		read (vector_line, v_a(1));
+		read (vector_line, v_a(0));
+		read (vector_line, v_y);
+		wait for 10ns;
+		a_sig <= v_a(3) & v_a(2) & v_a(1) & v_a(0);
+		--y <= v_y;
+		assert y_sig = v_y report "Wrong XOR...";
+		
+		v_y := y_sig;
+			
+		--write (result_line, a, left, 10);
+		--write (result_line, y, left, 1);
+		--writeline (result_file, result_line);
+    end loop;
+
+	file_close(vector_file);
+	--file_close(result_file);	
+ END PROCESS;	
+END;

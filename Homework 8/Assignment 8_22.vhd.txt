@@ -1,0 +1,40 @@
+--Author: Shubhang Mehrotra
+--Date: 03/25
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Write an HDL module that implements the binary-to-thermometer
+--code converter from Exercise 2.38:
+-- An M-bit thermometer code for the number k consists of k 1’s in the
+--least significant bit positions and M – k 0’s in all the more significant bit positions.
+--A binary-to-thermometer code converter has N inputs and 2^N–1 outputs. It
+--produces a 2^N–1 bit thermometer code for the number specified by the input.
+--For example, if the input is 110, the output should be 0111111. Design a 3:7
+--binary-to-thermometer code converter. Give a simplified Boolean equation for
+--each output, and sketch a schematic.
+
+
+ENTITY assignment8_22 IS 
+	GENERIC (N: integer := 3)
+	PORT (a : in  std_logic_vector(N downto 1);
+		  y : out std_logic_vector((2**N)-1 downto 1));
+END assignment8_22;
+
+ARCHITECTURE struct OF assignment8_22 IS 
+	
+BEGIN 
+	PROCESS (a) BEGIN
+		CASE a IS
+			when "000"  => y <= "0000000";
+			when "001"  => y <= "0000001";
+			when "010"  => y <= "0000011";
+			when "011"  => y <= "0000111";
+			when "100"  => y <= "0001111";
+			when "101"  => y <= "0011111";
+			when "110"  => y <= "0111111";
+			when others => y <= "1111111";
+		END CASE;
+	END PROCESS;
+END struct;

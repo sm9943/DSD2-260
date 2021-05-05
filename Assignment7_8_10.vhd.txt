@@ -1,0 +1,48 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity assignment7_8_10 is
+	PORT (clk  : in  std_logic;
+		  rst_n: in  std_logic;
+		  w1   : in  std_logic;
+		  w2   : in  std_logic;
+		  z    : out std_logic);
+end entity assignment7_8_10;
+
+architecture behave of assignment7_8_10 is
+	type state_type is (A, B, C, D);
+
+	signal y : state_type;
+	signal k : std_logic;
+
+begin
+	k <= w1 XNOR w2;
+	PROCESS (rst_n, clk)
+	begin
+		if (rst_n = '0') then
+			y <= A;
+		elsif rising_edge(clk) then	
+			CASE y IS	
+				when A => 
+					if k = '1' then y <= B;
+					else y <= A;
+					end if;
+				when B => 
+					if k = '1' then y <= C;
+					else y <= A;
+					end if;
+				when C => 
+					if k = '1' then y <= D;
+					else y <= A;
+					end if;
+				when D => 
+					if k = '1' then y <= D;
+					else y <= A;
+					end if; 
+			END CASE;
+		end if;
+	END PROCESS;
+
+	z <= '1' when y = D AND k = '1' else '0';
+end architecture behave;

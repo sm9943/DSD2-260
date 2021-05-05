@@ -1,0 +1,22 @@
+--Author: Shubhang Mehrotra
+--Date: 04/07
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Write an HDL module that implements the circuit from Exercise 2.26:
+-- Y = (A' + B')(C'+D') + E'
+
+
+ENTITY bubble IS 
+	PORT ( a, b, c, d, e : in  std_logic;
+		               y : out std_logic);
+END bubble;
+
+ARCHITECTURE struct OF bubble IS 
+BEGIN 
+	y <= not((not((not(a and b)) and
+         (not(c and d)))) and e);
+
+END struct;

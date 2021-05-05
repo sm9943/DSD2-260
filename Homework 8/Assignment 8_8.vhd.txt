@@ -1,0 +1,30 @@
+--Author: Shubhang Mehrotra
+--Date: 03/25
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+--Write an 8:1 multiplexer module called mux8 with inputs s(2:0), d0, d1,
+--d2, d3, d4, d5, d6, d7, and output y.
+
+
+ENTITY mux8 IS 
+	GENERIC ( width: integer := 4);
+	PORT ( d0, d1, d2, d3, d4, d5, d6, d7 : in  std_logic_vector(3 downto 0);
+										s : in	std_logic_vector(2 downto 0);
+										y : out std_logic_vector(6 downto 0));
+END mux8;
+
+ARCHITECTURE synth OF mux8 IS 
+BEGIN 
+	WITH s SELECT y <= 
+		d0 when "000",
+		d1 when "001",
+		d2 when "010",
+		d3 when "011",
+		d4 when "100",
+		d5 when "101",
+		d6 when "110",
+		d7 when others;
+END synth;
